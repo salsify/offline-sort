@@ -39,7 +39,7 @@ module OfflineSort
             entry = chunks[item.chunk_number].next
             pq.push(ChunkEntry.new(item.chunk_number, entry))
           rescue StopIteration
-            # end of chunk
+            chunks[item.chunk_number].io.close
           end
         end
       end
