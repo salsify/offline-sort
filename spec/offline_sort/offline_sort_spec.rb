@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe OfflineSort::OfflineSort do
   let(:count) { 1000 }
-  let(:entries_per_chunk) { count / 100 }
+  let(:entries_per_chunk) { count / 10 }
 
   let(:arrays) do
     count.times.map do |index|
@@ -14,28 +14,32 @@ describe OfflineSort::OfflineSort do
   let(:array_sort) { Proc.new { |arr| arr[array_sort_index] } }
 
   let(:hashes) do
-    count.times do |index|
-      { a: SecureRandom.hex, b: index, c: SecureRandom.hex }
+    count.times.map do |index|
+      { 'a' => SecureRandom.hex, 'b' => index, 'c' => SecureRandom.hex }
     end
   end
 
-  let(:hash_sort_key) { :c }
+  let(:hash_sort_key) { 'c' }
   let(:hash_sort) { Proc.new { |hash| hash[hash_sort_key] } }
 
   let(:input) { }
   let(:sort) { }
 
   before do
-    @sorted = []
-    osort = OfflineSort::OfflineSort.new(input.each, chunk_size: entries_per_chunk)
-    osort.sort(&sort).each do |entry|
-      @sorted << entry
+    @sorted = nil
+    result = Benchmark.measure do
+      osort = OfflineSort::OfflineSort.new(input, chunk_input_output_class: ::OfflineSort::Chunk::InputOutput::MessagePack, chunk_size: entries_per_chunk)
+      @sorted = osort.sort(&sort).map do |entry|
+        entry
+      end
     end
+
+    puts result
     @sorted
   end
 
   context "with arrays" do
-    let(:input) { arrays.each }
+    let(:input) { arrays }
     let(:sort) { array_sort }
 
     specify do
@@ -57,7 +61,7 @@ describe OfflineSort::OfflineSort do
   end
 
   context "hashes" do
-    let(:input) { hashes.each }
+    let(:input) { hashes }
     let(:sort) { hash_sort }
 
     specify do
@@ -65,10 +69,10 @@ describe OfflineSort::OfflineSort do
     end
 
     context "with multiple sort keys" do
-      let(:sort) { Proc.new { |hash| [hash[:a], hash[:c]] } }
+      let(:sort) { Proc.new { |hash| [hash['a'], hash['c']] } }
       let(:hashes) do
         count.times.map do |index|
-          { a: index.round(-1), b: index, c: SecureRandom.hex }
+          { 'a' => index.round(-1), 'b' => index, 'c' => SecureRandom.hex }
         end.shuffle
       end
 

@@ -26,7 +26,9 @@ module OfflineSort
     def merge(chunks)
       pq = PQueue.new { |x, y| (@sort_by.call(x.data) <=> @sort_by.call(y.data)) == -1 }
 
-      chunks.each_with_index do |chunk, index|
+      chunk_enumerators = chunks.map { |chunk| enumerate_chunk(chunk) }
+
+      chunk_enumerators.each_with_index do |chunk, index|
         entry = chunk.next
         pq.push(ChunkEntry.new(index, entry))
       end
@@ -36,7 +38,7 @@ module OfflineSort
           yielder.yield(item.data)
 
           begin
-            entry = chunks[item.chunk_number].next
+            entry = chunk_enumerators[item.chunk_number].next
             pq.push(ChunkEntry.new(item.chunk_number, entry))
           rescue StopIteration
             chunks[item.chunk_number].io.close
@@ -76,7 +78,7 @@ module OfflineSort
       file.flush
       file.rewind
 
-      enumerate_chunk(chunk_io)
+      chunk_io
     end
 
     def enumerate_chunk(chunk_io)

@@ -9,8 +9,8 @@ module OfflineSort
 
         def initialize(io)
           super
-          @packer = MessagePack::Packer.new(io)
-          @unpacker = MessagePack::Unpacker.new(io)
+          @packer = ::MessagePack::Packer.new(io)
+          @unpacker = ::MessagePack::Unpacker.new(io)
         end
 
         def read_entry

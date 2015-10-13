@@ -11,7 +11,7 @@ shared_examples "a valid chunk input output" do
 
   let(:hashes) do
     count.times.map do |index|
-      { a: SecureRandom.hex, b: index, c: SecureRandom.hex }
+      { 'a' => SecureRandom.hex, 'b' => index, 'c' => SecureRandom.hex }
     end
   end
 
@@ -72,12 +72,12 @@ end
 
 describe OfflineSort::Chunk::InputOutput::MessagePack do
   it_behaves_like "a valid chunk input output" do
-    let(:chunk) { OfflineSort::Chunk::InputOutput::Base.new(tempfile) }
+    let(:chunk) { OfflineSort::Chunk::InputOutput::MessagePack.new(tempfile) }
   end
 end
 
 describe OfflineSort::Chunk::InputOutput::Yaml do
   it_behaves_like "a valid chunk input output" do
-    let(:chunk) { OfflineSort::Chunk::InputOutput::Base.new(tempfile) }
+    let(:chunk) { OfflineSort::Chunk::InputOutput::Yaml.new(tempfile) }
   end
 end

@@ -6,6 +6,9 @@ module OfflineSort
       class Yaml < OfflineSort::Chunk::InputOutput::Base
         def read_entry
           line = io.gets
+
+          raise EOFError if line.nil?
+
           sio = StringIO.new
           sio.write(line)
           line = io.gets
