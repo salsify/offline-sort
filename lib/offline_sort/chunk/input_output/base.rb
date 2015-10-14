@@ -2,6 +2,8 @@ module OfflineSort
   module Chunk
     module InputOutput
       class Base
+        MethodNotImplementedError = Class.new(StandardError)
+
         attr_reader :io
 
         def initialize(io)
@@ -9,12 +11,40 @@ module OfflineSort
         end
 
         def read_entry
-          Marshal.load(io)
+          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
         end
 
         def write_entry(entry)
-          io.write(Marshal.dump(entry))
+          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
+        end
+
+        def write_entries(entries)
+          entries.each { |entry| write_entry(entry) }
+        end
+
+        def flush
           io.flush
+        end
+
+        def rewind
+          flush
+          io.rewind
+        end
+
+        def close
+          io.close
+        end
+
+        def each
+          Enumerator.new do |yielder|
+            while true
+              begin
+                yielder.yield(read_entry)
+              rescue EOFError
+                break
+              end
+            end
+          end
         end
       end
     end

@@ -19,7 +19,11 @@ module OfflineSort
 
         def write_entry(entry)
           packer.write(entry)
+        end
+
+        def flush
           packer.flush
+          super
         end
       end
     end
