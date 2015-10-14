@@ -19,32 +19,31 @@ Or install it yourself as:
     $ gem install offline-sort
 
 ## Usage
-
-Sorting arrays...
-
 ```ruby
   arrays = [ [4,5,6], [7,8,9], [1,2,3] ]
   
-  sorted = []
+  # Create a sorted enumerator
+  sorted = OfflineSort.sort(arrays, chunk_size: 1) do |array|
+    array.first
+  end
   
-  sort = OfflineSort::OfflineSort.new(arrays, chunk_size: 1)
-  sort.sort(&Proc.new { |array| array.first }).each do |entry|
-    sorted << entry
+  # Stream results in sorted order
+  sorted.each do |entry|
+    # e.g. write to a file
   end
 ```
 
-Sorting hashes...
+Sorting is not limited to arrays. You can anything that can be expressed in a `Enumerable#sort_by` block.
 
-```ruby
-  arrays = [ { a: 4, b: 5, c: 6}, { a: 7, b: 8, c: 9 }, { a: 1, b: 2, c: 3 } ]
-  
-  sorted = []
-  
-  sort = OfflineSort::OfflineSort.new(arrays, chunk_size: 1)
-  sort.sort(&Proc.new { |hash| hash[:a] }).each do |entry|
-    sorted << entry
-  end
-```
+## Using MessagePack
+
+Message pack serialization is faster than the default Ruby `Marshal` strategy. To enable message pack serialization follow these steps.
+
+`gem install msgpack`
+
+`require 'msgpack'`
+
+Requiring MessagePack before you require `offline_sort` will automatically enable MessagePack serialization in the gem.
 
 Limitations
 
