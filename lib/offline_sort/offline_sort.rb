@@ -1,5 +1,6 @@
-require 'pqueue'
 require 'offline_sort/chunk'
+require 'offline_sort/fixed_size_min_heap'
+require 'offline_sort/fixed_size_min_array'
 
 module OfflineSort
   def self.sort(*args, &sort_by)
@@ -27,14 +28,15 @@ module OfflineSort
 
     #TODO optimization for when there is less than a single full chunk of data
     def merge(sorted_chunk_ios)
-      pq = PQueue.new { |x, y| -(sort_by.call(x.data) <=> sort_by.call(y.data)) }
-
+      pq = []
       chunk_enumerators = sorted_chunk_ios.map(&:each)
 
       chunk_enumerators.each_with_index do |chunk, index|
         entry = chunk.next
         pq.push(ChunkEntry.new(index, entry))
       end
+
+      pq = FixedSizeMinHeap.new(pq, &sort_by)
 
       Enumerator.new do |yielder|
         while item = pq.pop
@@ -48,6 +50,20 @@ module OfflineSort
           end
         end
       end
+    end
+
+    def sort_last!(container)
+      return container if container.size < 2
+      key = container.last
+      (container.size-2).downto(0).each do |i|
+        if (sort_by.call(container[i].data) <=> sort_by.call(key.data)) == -1
+          container[i+1] = container[i]
+          container[i] = key
+        else
+          break
+        end
+      end
+      container
     end
 
     def split

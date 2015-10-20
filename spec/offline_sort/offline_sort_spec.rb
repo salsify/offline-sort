@@ -4,18 +4,41 @@ describe OfflineSort::Sorter do
 
   shared_examples "a correct offline sort" do
     let(:count) { 1000 }
-    let(:entries_per_chunk) { count / 9 }
+    let(:entries_per_chunk) { 90 }
     let(:enumerable) {}
     let(:sort) {}
 
     before do
+      @unsorted = enumerable.dup
+      r = Benchmark.measure do
       result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
       @sorted = result.map do |entry|
         entry
       end
+      end
+      puts r
     end
 
     it "produces the same sorted result as an in-memory sort" do
+      expect(@unsorted).to match_array(enumerable)
+      expect do
+        last = nil
+        entry_count = 0
+        @sorted.each do |entry|
+          if last.nil?
+            last = entry
+            entry_count += 1
+            next
+          end
+
+          unless ((sort.call(last) <=> sort.call(entry)) == -1)
+            raise "Out of order at line #{entry_count}"
+          end
+
+          last = entry
+          entry_count += 1
+        end
+      end.not_to raise_error
       expect(@sorted).to match_array(enumerable.sort_by(&sort))
     end
   end
