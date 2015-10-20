@@ -3,24 +3,24 @@ module OfflineSort
     attr_accessor :array
     attr_reader :sort_by
     attr_reader :size_limit
-    attr_reader :array_end
+    attr_reader :array_start
 
     def initialize(array, &sort_by)
       @array = array
       @sort_by = sort_by
       @size_limit = array.size
-      @end = array.size - 1
-      sort_ascending!
+      @array_start = 0
+      array.sort_by! { |item| sort_by.call(item.data) }
     end
 
     def push(item)
       grow
-      array[array_end] = item
+      array[array_start] = item
       insert!
     end
 
     def pop
-      item = array[array_end]
+      item = array[array_start]
       shrink unless item.nil?
       item
     end
@@ -28,13 +28,13 @@ module OfflineSort
     private
 
     def shrink
-      array[array_end] = nil
-      @array_end -= 1
+      array[array_start] = nil
+      @array_start += 1
     end
 
     def grow
-      raise "Heap Size (#{limit}) Exceeded" if array_end == (size_limit - 1)
-      @array_end += 1
+      raise "Size (#{limit}) Exceeded" if array_start == 0
+      @array_start -= 1
     end
 
     # Compare elements at the supplied indices
@@ -48,16 +48,11 @@ module OfflineSort
       array[i], array[j] = array[j], array[i]
     end
 
-    def sort_ascending!
-      array.sort_by! { |item| sort_by.call(item.data) }
-      array.reverse!
-    end
-
     def insert!
-      return unless array_end > 0
+      return unless size_limit - array_start > 1
 
-      item_index = array_end
-      (item_index - 1).downto(0).each do |i|
+      item_index = array_start
+      (item_index + 1).upto(size_limit - 1).each do |i|
         if compare(i,item_index)
           swap(i,item_index)
           item_index = i

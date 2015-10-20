@@ -1,5 +1,6 @@
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
+require 'offline_sort/fixed_size_min_array'
 
 module OfflineSort
   def self.sort(*args, &sort_by)
@@ -35,9 +36,6 @@ module OfflineSort
         pq.push(ChunkEntry.new(index, entry))
       end
 
-      #pq.sort_by! { |item| sort_by.call(item.data) }
-      #pq.reverse!
-
       pq = FixedSizeMinHeap.new(pq, &sort_by)
 
       Enumerator.new do |yielder|
@@ -47,7 +45,6 @@ module OfflineSort
           begin
             entry = chunk_enumerators[item.chunk_number].next
             pq.push(ChunkEntry.new(item.chunk_number, entry))
-            #sort_last!(pq)
           rescue StopIteration
             sorted_chunk_ios[item.chunk_number].close
           end

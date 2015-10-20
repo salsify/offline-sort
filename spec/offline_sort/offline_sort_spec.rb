@@ -3,8 +3,8 @@ require 'spec_helper'
 describe OfflineSort::Sorter do
 
   shared_examples "a correct offline sort" do
-    let(:count) { 5000000 }
-    let(:entries_per_chunk) { 599900 }
+    let(:count) { 1000 }
+    let(:entries_per_chunk) { 90 }
     let(:enumerable) {}
     let(:sort) {}
 
