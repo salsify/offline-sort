@@ -7,7 +7,7 @@ module OfflineSort
 
     def initialize(array, &sort_by)
       @array = array
-      @sort_by = sort_by
+      @sort_by = sort_by || Proc.new { |item| item }
       @size_limit = array.size
       @heap_end = array.size - 1
       ((array.size * 0.5) - 1).to_i.downto(0) { |i| heapify(i) }
@@ -41,43 +41,36 @@ module OfflineSort
 
     # Compare elements at the supplied indices
     def compare(i,j)
-      (sort_by.call(array[i].data) <=> sort_by.call(array[j].data)) == -1
+      (sort_by.call(array[i]) <=> sort_by.call(array[j])) == -1
     end
 
     # Swap elements in the array
     def swap(i,j)
-      #TODO does this allocate arrays?
-      array[i], array[j] = array[j], array[i]
+      temp = array[i]
+      array[i] = array[j]
+      array[j] = temp
     end
 
     # Get the parent of the node i > 0.
     def parent(i)
-      ( i - 1 ) >> 1  # (i-1)/2, only valid iff i > 0 !!
+      (i - 1) / 2
     end
     # Get the node left of node i >= 0
     def left(i)
-      ( i << 1 ) + 1  # 2i+1
+      (2 * i) + 1
     end
     # Get the node right of node i >= 0
     def right(i)
-      ( i << 1 ) + 2  # 2i+2
+      (2 * i) + 2
     end
 
     # Keeps an heap sorted with the smallest (largest) element on top
     def heapify(i)
       l = left(i)
-      top = if (l <= heap_end) && compare(l,i)
-              l
-            else
-              i
-            end
+      top = ((l <= heap_end) && compare(l,i)) ? l : i
 
       r = right(i)
-      top = if (r <= heap_end) && compare(r,top)
-              r
-            else
-              top
-            end
+      top = ((r <= heap_end) && compare(r,top)) ? r : top
 
       if top != i
         swap(i, top)

@@ -1,6 +1,5 @@
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
-require 'offline_sort/fixed_size_min_array'
 
 module OfflineSort
   def self.sort(*args, &sort_by)
@@ -36,7 +35,8 @@ module OfflineSort
         pq.push(ChunkEntry.new(index, entry))
       end
 
-      pq = FixedSizeMinHeap.new(pq, &sort_by)
+      entry_sort_by = Proc.new { |entry| sort_by.call(entry.data) }
+      pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
 
       Enumerator.new do |yielder|
         while item = pq.pop
@@ -50,20 +50,6 @@ module OfflineSort
           end
         end
       end
-    end
-
-    def sort_last!(container)
-      return container if container.size < 2
-      key = container.last
-      (container.size-2).downto(0).each do |i|
-        if (sort_by.call(container[i].data) <=> sort_by.call(key.data)) == -1
-          container[i+1] = container[i]
-          container[i] = key
-        else
-          break
-        end
-      end
-      container
     end
 
     def split

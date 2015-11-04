@@ -3,8 +3,8 @@ require 'spec_helper'
 describe OfflineSort::Sorter do
 
   shared_examples "a correct offline sort" do
-    let(:count) { 1000 }
-    let(:entries_per_chunk) { 90 }
+    let(:count) { 10000 }
+    let(:entries_per_chunk) { 900 }
     let(:enumerable) {}
     let(:sort) {}
 
@@ -12,6 +12,7 @@ describe OfflineSort::Sorter do
       @unsorted = enumerable.dup
       r = Benchmark.measure do
       result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
+
       @sorted = result.map do |entry|
         entry
       end

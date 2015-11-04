@@ -1,6 +1,7 @@
 module OfflineSort
   module Chunk
     module InputOutput
+
       class Base
         MethodNotImplementedError = Class.new(StandardError)
 
@@ -47,6 +48,7 @@ module OfflineSort
           end
         end
       end
+
     end
   end
 end
