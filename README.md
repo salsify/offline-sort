@@ -4,6 +4,8 @@ Sort arbitrarily large collections of data with limited memory usage. Given an e
 
 The size of the chunks and the strategy for serializing and deserializing the data are configurable. The gem comes with builtin strategies for `Marshal`, `MessagePack` and `YAML`.
 
+The development of this gem is documented in this [post](http://blog.salsify.com/engineering/ruby-scalable-offline-sort) from the Salsify Engineering Blog.
+
 ## Installation
 
 Add this line to your application's Gemfile:
