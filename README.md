@@ -36,7 +36,7 @@ Or install it yourself as:
 ```
 The example above will create 3 files with 1 array each, then output them in sorted order. You should try different values of `chunk_size` to find the best speed/memory combination for your use case. In general larger chunk sizes will use more memory but run faster.
 
-Sorting is not limited to arrays. You can anything that can be expressed in a `Enumerable#sort_by` block.
+Sorting is not limited to arrays. You can use anything that can be expressed in a `Enumerable#sort_by` block.
 
 ## Using MessagePack
 
