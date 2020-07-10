@@ -1,5 +1,6 @@
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
+require 'tempfile'
 
 module OfflineSort
   def self.sort(*args, &sort_by)
@@ -20,12 +21,31 @@ module OfflineSort
     end
 
     def sort
-      merge(split)
+      sorted_chunks = []
+      chunk_entries = []
+
+      enumerable.each do |entry|
+        chunk_entries << entry
+
+        if chunk_entries.size == chunk_size
+          sorted_chunks << write_sorted_chunk(chunk_entries)
+          chunk_entries.clear
+        end
+      end
+
+      unless chunk_entries.empty?
+        # In this case we have less than one full chunk so don't need to write
+        # out to disk
+        return chunk_entries.sort_by(&sort_by).to_enum if sorted_chunks.empty?
+
+        sorted_chunks << write_sorted_chunk(chunk_entries)
+      end
+
+      merge(sorted_chunks)
     end
 
     private
 
-    #TODO optimization for when there is less than a single full chunk of data
     def merge(sorted_chunk_ios)
       pq = []
       chunk_enumerators = sorted_chunk_ios.map(&:each)
@@ -50,26 +70,6 @@ module OfflineSort
           end
         end
       end
-    end
-
-    def split
-      sorted_chunks = []
-      chunk_entries = []
-
-      enumerable.each do |entry|
-        chunk_entries << entry
-
-        if chunk_entries.size == chunk_size
-          sorted_chunks << write_sorted_chunk(chunk_entries)
-          chunk_entries.clear
-        end
-      end
-
-      unless chunk_entries.empty?
-        sorted_chunks << write_sorted_chunk(chunk_entries)
-      end
-
-      sorted_chunks
     end
 
     def write_sorted_chunk(entries)

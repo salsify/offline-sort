@@ -7,40 +7,53 @@ describe OfflineSort::Sorter do
     let(:entries_per_chunk) { 900 }
     let(:enumerable) {}
     let(:sort) {}
+    let(:unsorted) { enumerable.dup }
 
-    before do
-      @unsorted = enumerable.dup
-      r = Benchmark.measure do
-      result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
-
-      @sorted = result.map do |entry|
-        entry
-      end
-      end
-      puts r
+    subject do
+      OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
     end
 
-    it "produces the same sorted result as an in-memory sort" do
-      expect(@unsorted).to match_array(enumerable)
-      expect do
-        last = nil
-        entry_count = 0
-        @sorted.each do |entry|
-          if last.nil?
+    it "writes out to disk" do
+      expect(Tempfile).to receive(:open).at_least(:once).and_call_original
+      subject
+    end
+
+    shared_examples "produces a sorted result" do
+      it "produces the same sorted result as an in-memory sort" do
+        sorted = subject.to_a
+
+        expect(unsorted).to match_array(enumerable)
+        expect do
+          last = nil
+          entry_count = 0
+          sorted.each do |entry|
+            if last.nil?
+              last = entry
+              entry_count += 1
+              next
+            end
+
+            unless (sort.call(last) <=> sort.call(entry)) == -1
+              raise "Out of order at line #{entry_count}"
+            end
+
             last = entry
             entry_count += 1
-            next
           end
+        end.not_to raise_error
+        expect(sorted).to match_array(enumerable.sort_by(&sort))
+      end
+    end
 
-          unless ((sort.call(last) <=> sort.call(entry)) == -1)
-            raise "Out of order at line #{entry_count}"
-          end
+    context "when the number of entries is smaller than the chunk size" do
+      let(:count) { entries_per_chunk - 1 }
 
-          last = entry
-          entry_count += 1
-        end
-      end.not_to raise_error
-      expect(@sorted).to match_array(enumerable.sort_by(&sort))
+      it "does not write out to disk" do
+        expect(Tempfile).not_to receive(:open)
+        subject
+      end
+
+      it_behaves_like "produces a sorted result"
     end
   end
 
