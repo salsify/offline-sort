@@ -1,5 +1,6 @@
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
+require 'offline_sort/merger'
 require 'tempfile'
 
 module OfflineSort
@@ -20,9 +21,10 @@ module OfflineSort
       @sort_by = sort_by
     end
 
+    # Sorts the enumerable passed, maintaining a max memory of chunk size
     def sort
-      sorted_chunks = []
       chunk_entries = []
+      sorted_chunks = []
 
       enumerable.each do |entry|
         chunk_entries << entry
@@ -41,36 +43,10 @@ module OfflineSort
         sorted_chunks << write_sorted_chunk(chunk_entries)
       end
 
-      merge(sorted_chunks)
+      Merger.new(sorted_chunks, sort_by)
     end
 
     private
-
-    def merge(sorted_chunk_ios)
-      pq = []
-      chunk_enumerators = sorted_chunk_ios.map(&:each)
-
-      chunk_enumerators.each_with_index do |chunk, index|
-        entry = chunk.next
-        pq.push(ChunkEntry.new(index, entry))
-      end
-
-      entry_sort_by = Proc.new { |entry| sort_by.call(entry.data) }
-      pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
-
-      Enumerator.new do |yielder|
-        while item = pq.pop
-          yielder.yield(item.data)
-
-          begin
-            entry = chunk_enumerators[item.chunk_number].next
-            pq.push(ChunkEntry.new(item.chunk_number, entry))
-          rescue StopIteration
-            sorted_chunk_ios[item.chunk_number].close
-          end
-        end
-      end
-    end
 
     def write_sorted_chunk(entries)
       file = Tempfile.open('sort-chunk-')
@@ -81,15 +57,6 @@ module OfflineSort
 
       chunk_io.rewind
       chunk_io
-    end
-
-    class ChunkEntry
-      attr_reader :chunk_number, :data
-
-      def initialize(chunk_number, data)
-        @chunk_number = chunk_number
-        @data = data
-      end
     end
   end
 end

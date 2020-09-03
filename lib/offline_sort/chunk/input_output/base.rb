@@ -32,6 +32,10 @@ module OfflineSort
           io.rewind
         end
 
+        def open
+          io.open
+        end
+
         def close
           io.close
         end
