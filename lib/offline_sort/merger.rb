@@ -12,7 +12,7 @@ module OfflineSort
       @sort_by = sort_by
     end
 
-    def_delegators :enumerator, :each
+    def_delegators :enumerator, :each, :next
 
     private
 
