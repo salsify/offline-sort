@@ -38,9 +38,11 @@ module OfflineSort
       unless chunk_entries.empty?
         # In this case we have less than one full chunk so don't need to write
         # out to disk
-        return chunk_entries.sort_by(&sort_by).to_enum if sorted_chunks.empty?
-
-        sorted_chunks << write_sorted_chunk(chunk_entries)
+        if sorted_chunks.empty?
+          sorted_chunks = [chunk_entries.sort_by(&sort_by).to_enum]
+        else
+          sorted_chunks << write_sorted_chunk(chunk_entries)
+        end
       end
 
       Merger.new(sorted_chunks, sort_by)
