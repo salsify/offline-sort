@@ -12,9 +12,7 @@ module OfflineSort
       @sort_by = sort_by
     end
 
-    def_delegators :enumerator, :each, :next
-
-    private
+    def_delegators :enumerator, :each
 
     def enumerator
       pq = []
@@ -42,6 +40,8 @@ module OfflineSort
         end
       end
     end
+
+    private
 
     class ChunkEntry
       attr_reader :chunk_number, :data
