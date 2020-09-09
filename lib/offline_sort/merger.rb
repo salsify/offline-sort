@@ -15,27 +15,31 @@ module OfflineSort
     def_delegators :enumerator, :each
 
     def enumerator
-      pq = []
-      chunk_enumerators =
-        sorted_chunks.each(&:open).each(&:rewind).map(&:each)
+      if sorted_chunks.size == 1
+        sorted_chunks.first.to_enum
+      else
+        pq = []
+        chunk_enumerators =
+          sorted_chunks.each(&:open).each(&:rewind).map(&:each)
 
-      chunk_enumerators.each_with_index do |chunk, index|
-        entry = chunk.next
-        pq.push(ChunkEntry.new(index, entry))
-      end
+        chunk_enumerators.each_with_index do |chunk, index|
+          entry = chunk.next
+          pq.push(ChunkEntry.new(index, entry))
+        end
 
-      entry_sort_by = Proc.new { |entry| sort_by.call(entry.data) }
-      pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
+        entry_sort_by = Proc.new { |entry| sort_by.call(entry.data) }
+        pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
 
-      Enumerator.new do |yielder|
-        while item = pq.pop
-          yielder.yield(item.data)
+        Enumerator.new do |yielder|
+          while item = pq.pop
+            yielder.yield(item.data)
 
-          begin
-            entry = chunk_enumerators[item.chunk_number].next
-            pq.push(ChunkEntry.new(item.chunk_number, entry))
-          rescue StopIteration
-            sorted_chunks[item.chunk_number].close
+            begin
+              entry = chunk_enumerators[item.chunk_number].next
+              pq.push(ChunkEntry.new(item.chunk_number, entry))
+            rescue StopIteration
+              sorted_chunks[item.chunk_number].close
+            end
           end
         end
       end
