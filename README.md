@@ -1,3 +1,6 @@
+
+[![Build Status](https://circleci.com/gh/salsify/offline-sort.svg?style=svg)](https://app.circleci.com/pipelines/github/salsify/offline-sort)
+
 # offline-sort
 
 Sort arbitrarily large collections of data with limited memory usage. Given an enumerable and a `sort_by` proc, this gem will break the input data into sorted chunks, persist the chunks, and return an `Enumerator`. Data read from this enumerator will be in its final sorted order.
