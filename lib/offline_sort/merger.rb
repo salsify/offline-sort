@@ -16,7 +16,7 @@ module OfflineSort
 
     def enumerator
       if sorted_chunks.size == 1
-        sorted_chunks.first.to_enum
+        sorted_chunks.first.open.to_enum
       else
         pq = []
         chunk_enumerators =
