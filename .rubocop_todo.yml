@@ -6,14 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: TreatCommentsAsGroupSeparators, ConsiderPunctuation, Include.
-# Include: **/*.gemspec
-Gemspec/OrderedDependencies:
-  Exclude:
-    - 'offline-sort.gemspec'
-
 # Offense count: 2
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -83,19 +75,6 @@ Style/CommentAnnotation:
   Exclude:
     - 'lib/offline_sort/offline_sort.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'offline-sort.gemspec'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'offline-sort.gemspec'
-    - 'spec/spec_helper.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 Style/IfUnlessModifier:
@@ -140,12 +119,6 @@ Style/ParenthesesAroundCondition:
 Style/RaiseArgs:
   EnforcedStyle: compact
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/RedundantPercentQ:
-  Exclude:
-    - 'offline-sort.gemspec'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAsExpressionSeparator.
@@ -159,14 +132,6 @@ Style/SoleNestedConditional:
   Exclude:
     - 'lib/offline_sort/fixed_size_min_heap.rb'
     - 'spec/offline_sort/fixed_size_min_heap_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  Exclude:
-    - 'offline-sort.gemspec'
 
 # Offense count: 2
 # Cop supports --auto-correct.
