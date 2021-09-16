@@ -28,12 +28,6 @@ Layout/EmptyLineAfterGuardClause:
   Exclude:
     - 'lib/offline_sort/fixed_size_min_heap.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterMagicComment:
-  Exclude:
-    - 'offline-sort.gemspec'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
@@ -180,13 +174,6 @@ Style/ExpandPathArguments:
   Exclude:
     - 'offline-sort.gemspec'
     - 'spec/spec_helper.rb'
-
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 # Offense count: 4
 # Cop supports --auto-correct.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OfflineSort
   class FixedSizeMinHeap
     attr_accessor :array

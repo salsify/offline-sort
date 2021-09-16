@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
 
