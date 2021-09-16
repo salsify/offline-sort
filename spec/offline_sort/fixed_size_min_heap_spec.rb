@@ -87,11 +87,11 @@ describe OfflineSort::FixedSizeMinHeap do
         end
       end
 
-      if right < array.size
-        unless array[right] >= e
-          puts "right #{e} #{array}"
-          raise 'not a heap'
-        end
+      next unless right < array.size
+
+      unless array[right] >= e
+        puts "right #{e} #{array}"
+        raise 'not a heap'
       end
     end
   end
