@@ -6,13 +6,13 @@ shared_examples "a valid chunk input output" do
   let(:count) { 1000 }
 
   let(:arrays) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       [SecureRandom.hex, index, SecureRandom.hex]
     end
   end
 
   let(:hashes) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       { 'a' => SecureRandom.hex, 'b' => index, 'c' => SecureRandom.hex }
     end
   end

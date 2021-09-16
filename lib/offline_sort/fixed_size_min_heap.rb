@@ -3,9 +3,7 @@
 module OfflineSort
   class FixedSizeMinHeap
     attr_accessor :array
-    attr_reader :sort_by
-    attr_reader :size_limit
-    attr_reader :heap_end
+    attr_reader :sort_by, :size_limit, :heap_end
 
     def initialize(array, &sort_by)
       @array = array

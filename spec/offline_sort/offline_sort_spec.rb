@@ -47,7 +47,7 @@ describe OfflineSort::Sorter do
   end
 
   let(:arrays) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       [SecureRandom.hex, index, SecureRandom.hex]
     end
   end
@@ -56,7 +56,7 @@ describe OfflineSort::Sorter do
   let(:array_sort) { Proc.new { |arr| arr[array_sort_index] } }
 
   let(:hashes) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       { 'a' => SecureRandom.hex, 'b' => index, 'c' => SecureRandom.hex }
     end
   end
@@ -74,7 +74,7 @@ describe OfflineSort::Sorter do
     context "with multiple sort keys" do
       it_behaves_like "a correct offline sort" do
         let(:enumerable) do
-          count.times.map do |index|
+          Array.new(count) do |index|
             [index.round(-1), index, SecureRandom.hex]
           end.shuffle
         end
@@ -92,7 +92,7 @@ describe OfflineSort::Sorter do
     context "with multiple sort keys" do
       it_behaves_like "a correct offline sort" do
         let(:enumerable) do
-          count.times.map do |index|
+          Array.new(count) do |index|
             { 'a' => index.round(-1), 'b' => index, 'c' => SecureRandom.hex }
           end.shuffle
         end
