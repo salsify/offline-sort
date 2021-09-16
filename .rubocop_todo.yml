@@ -15,14 +15,6 @@ Gemspec/OrderedDependencies:
     - 'offline-sort.gemspec'
 
 # Offense count: 1
-# Configuration parameters: Include.
-# Include: **/*.gemspec
-Gemspec/RequiredRubyVersion:
-  Exclude:
-    - 'schemas_gem/*_schemas.gemspec'
-    - 'offline-sort.gemspec'
-
-# Offense count: 1
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterGuardClause:
   Exclude:
