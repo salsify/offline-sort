@@ -70,10 +70,10 @@ module OfflineSort
     # Keeps an heap sorted with the smallest (largest) element on top
     def heapify(i)
       l = left(i)
-      top = ((l <= heap_end) && compare(l, i)) ? l : i
+      top = (l <= heap_end) && compare(l, i) ? l : i
 
       r = right(i)
-      top = ((r <= heap_end) && compare(r, top)) ? r : top
+      top = (r <= heap_end) && compare(r, top) ? r : top
 
       if top != i
         swap(i, top)
@@ -82,9 +82,11 @@ module OfflineSort
     end
 
     def sift_up(i)
-      if i > 0 && p = parent(i)
-        if compare(i, p)
-          swap(i, p);
+      if i > 0
+        p = parent(i)
+
+        if p && compare(i, p)
+          swap(i, p)
           sift_up(p)
         end
       end

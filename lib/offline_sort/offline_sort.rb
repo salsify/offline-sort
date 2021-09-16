@@ -44,7 +44,7 @@ module OfflineSort
       pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
 
       Enumerator.new do |yielder|
-        while item = pq.pop
+        while (item = pq.pop)
           yielder.yield(item.data)
 
           begin

@@ -80,11 +80,9 @@ describe OfflineSort::FixedSizeMinHeap do
       left = (2 * index) + 1
       right = (2 * index) + 2
 
-      if left < array.size
-        unless array[left] >= e
-          puts "left #{e} #{array}"
-          raise 'not a heap'
-        end
+      if left < array.size && array[left] < e
+        puts "left #{e} #{array}"
+        raise 'not a heap'
       end
 
       next unless right < array.size
