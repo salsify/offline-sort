@@ -34,9 +34,7 @@ describe OfflineSort::Sorter do
             next
           end
 
-          unless (sort.call(last) <=> sort.call(entry)) == -1
-            raise "Out of order at line #{entry_count}"
-          end
+          raise "Out of order at line #{entry_count}" unless (sort.call(last) <=> sort.call(entry)) == -1
 
           last = entry
           entry_count += 1

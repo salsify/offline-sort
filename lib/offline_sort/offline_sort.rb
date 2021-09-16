@@ -70,9 +70,7 @@ module OfflineSort
         end
       end
 
-      unless chunk_entries.empty?
-        sorted_chunks << write_sorted_chunk(chunk_entries)
-      end
+      sorted_chunks << write_sorted_chunk(chunk_entries) unless chunk_entries.empty?
 
       sorted_chunks
     end

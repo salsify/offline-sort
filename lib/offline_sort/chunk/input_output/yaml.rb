@@ -24,18 +24,14 @@ module OfflineSort
           loop do
             line = io.gets
 
-            if line && line.start_with?('---')
-              document_count += 1
-            end
+            document_count += 1 if line && line.start_with?('---')
 
             sio.write(line)
             break if line.nil? || document_count > 1
           end
 
           # reset the io to the beginning of the document
-          if document_count > 1
-            io.seek(io.pos - line.length, IO::SEEK_SET)
-          end
+          io.seek(io.pos - line.length, IO::SEEK_SET) if document_count > 1
 
           raise EOFError unless sio.size > 0 # rubocop:disable Style/ZeroLengthPredicate
 
