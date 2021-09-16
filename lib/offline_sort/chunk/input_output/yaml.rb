@@ -20,6 +20,7 @@ module OfflineSort
         def next_document
           sio = StringIO.new
           document_count = 0
+          line = nil
 
           loop do
             line = io.gets
