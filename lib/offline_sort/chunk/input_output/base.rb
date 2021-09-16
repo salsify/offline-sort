@@ -12,11 +12,11 @@ module OfflineSort
         end
 
         def read_entry
-          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
+          raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
         def write_entry(entry)
-          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
+          raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
         def write_entries(entries)

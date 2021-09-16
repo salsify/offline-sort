@@ -21,7 +21,7 @@ shared_examples "a valid chunk input output" do
     t
   end
 
-  let(:chunk_class) { }
+  let(:chunk_class) {}
   let(:chunk_io) { chunk_class.new(tempfile) }
 
   describe "#rewind" do
