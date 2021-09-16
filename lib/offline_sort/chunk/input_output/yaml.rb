@@ -8,7 +8,7 @@ module OfflineSort
       class Yaml < OfflineSort::Chunk::InputOutput::Base
         # The yaml parser does not expose a document enumerator that we can call next on without loading the entire file
         def read_entry
-          YAML.load(next_document)
+          YAML.load(next_document) # rubocop:disable Security/YAMLLoad, this is loading from a trusted source
         end
 
         def write_entry(entry)

@@ -26,13 +26,6 @@ Lint/UnusedMethodArgument:
   Exclude:
     - 'lib/offline_sort/chunk/input_output/base.rb'
 
-# Offense count: 9
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'lib/offline_sort/fixed_size_min_heap.rb'
-
 # Offense count: 6
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect.
@@ -47,17 +40,6 @@ Performance/TimesMap:
 RSpec/FilePath:
   Exclude:
     - 'spec/offline_sort/offline_sort_spec.rb'
-
-# Offense count: 1
-Security/MarshalLoad:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/marshal.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Security/YAMLLoad:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/yaml.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.

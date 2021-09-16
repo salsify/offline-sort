@@ -8,3 +8,10 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'gemfiles/**/*'
+
+# Offense count: 9
+# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+# AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
+Naming/MethodParameterName:
+  Exclude:
+    - 'lib/offline_sort/fixed_size_min_heap.rb'
