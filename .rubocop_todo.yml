@@ -239,17 +239,6 @@ Style/SpecialGlobalVars:
   Exclude:
     - 'offline-sort.gemspec'
 
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'spec/**/*'
-    - 'Rakefile'
-    - 'lib/offline_sort/version.rb'
-    - 'offline-sort.gemspec'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowSafeAssignment.
