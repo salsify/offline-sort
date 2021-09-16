@@ -82,16 +82,17 @@ end
 describe OfflineSort::Chunk::InputOutput::Base do
   let(:io) { Tempfile.new('chunk') }
   let(:chunk_io) { OfflineSort::Chunk::InputOutput::Base.new(io) }
+  let(:expected_error_klass) { OfflineSort::Chunk::InputOutput::Base::MethodNotImplementedError }
 
   describe "#read_entry" do
     it "raises when read_entry is called" do
-      expect { chunk_io.read_entry }.to raise_error(OfflineSort::Chunk::InputOutput::Base::MethodNotImplementedError)
+      expect { chunk_io.read_entry }.to raise_error(expected_error_klass)
     end
   end
 
   describe "#write_entry" do
     it "raises when write_entry is called" do
-      expect { chunk_io.write_entry({}) }.to raise_error(OfflineSort::Chunk::InputOutput::Base::MethodNotImplementedError)
+      expect { chunk_io.write_entry({}) }.to raise_error(expected_error_klass)
     end
   end
 end

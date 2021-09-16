@@ -14,7 +14,10 @@ module OfflineSort
 
     attr_reader :enumerable, :sort_by, :chunk_size, :chunk_input_output_class
 
-    def initialize(enumerable, chunk_input_output_class: DEFAULT_CHUNK_IO_CLASS, chunk_size: DEFAULT_CHUNK_SIZE, &sort_by)
+    def initialize(enumerable,
+                   chunk_input_output_class: DEFAULT_CHUNK_IO_CLASS,
+                   chunk_size: DEFAULT_CHUNK_SIZE,
+                   &sort_by)
       @enumerable = enumerable
       @chunk_input_output_class = chunk_input_output_class
       @chunk_size = chunk_size
