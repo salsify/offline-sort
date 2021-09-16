@@ -1,18 +1,84 @@
 version: 2.1
-orbs:
-  ruby: circleci/ruby@0.1.2
-
 jobs:
-  build:
+  lint:
     docker:
-      - image: circleci/ruby:2.6.3-stretch-node
-    executor: ruby/default
+      - image: salsify/ruby_ci:2.6.6
+    working_directory: ~/offline-sort
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-gems-ruby-2.6.6-{{ checksum "offline-sort.gemspec" }}-{{ checksum "Gemfile" }}
+            - v1-gems-ruby-2.6.6-
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
+          name: Install Gems
+          command: |
+            if ! bundle check --path=vendor/bundle; then
+              bundle install --path=vendor/bundle --jobs=4 --retry=3
+              bundle clean
+            fi
+      - save_cache:
+          key: v1-gems-ruby-2.6.6-{{ checksum "offline-sort.gemspec" }}-{{ checksum "Gemfile" }}
+          paths:
+            - "vendor/bundle"
+            - "gemfiles/vendor/bundle"
       - run:
-          name: Tests
-          command: bundle exec rspec spec
+          name: Run Rubocop
+          command: bundle exec rubocop
+  test:
+    parameters:
+      gemfile:
+        type: string
+      ruby_version:
+        type: string
+    docker:
+      - image: salsify/ruby_ci:<< parameters.ruby_version >>
+    environment:
+      CIRCLE_TEST_REPORTS: "test-results"
+      BUNDLE_GEMFILE: << parameters.gemfile >>
+    working_directory: ~/offline-sort
+    steps:
+      - checkout
+      - unless:
+          condition:
+            equal: ["gemfiles/rails_edge.gemfile", << parameters.gemfile >>]
+          steps:
+          - restore_cache:
+              keys:
+                - v1-gems-ruby-<< parameters.ruby_version >>-{{ checksum "offline-sort.gemspec" }}-{{ checksum "<< parameters.gemfile >>" }}
+                - v1-gems-ruby-<< parameters.ruby_version >>-
+      - run:
+          name: Install Gems
+          command: |
+            if ! bundle check --path=vendor/bundle; then
+              bundle install --path=vendor/bundle --jobs=4 --retry=3
+              bundle clean
+            fi
+      - unless:
+          condition:
+            equal: [ "gemfiles/rails_edge.gemfile", << parameters.gemfile >> ]
+          steps:
+          - save_cache:
+              key: v1-gems-ruby-<< parameters.ruby_version >>-{{ checksum "offline-sort.gemspec" }}-{{ checksum "<< parameters.gemfile >>" }}
+              paths:
+                - "vendor/bundle"
+                - "gemfiles/vendor/bundle"
+      - run:
+          name: Run Tests
+          command: |
+            bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec/junit.xml --format progress spec
+      - store_test_results:
+          path: "test-results"
+workflows:
+  build:
+    jobs:
+      - lint
+      - test:
+          matrix:
+            parameters:
+              gemfile:
+              - "Gemfile"
+              ruby_version:
+              - "2.6.6"
+              - "2.7.2"
+              - "3.0.0"

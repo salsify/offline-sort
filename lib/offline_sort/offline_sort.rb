@@ -2,8 +2,8 @@ require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
 
 module OfflineSort
-  def self.sort(*args, &sort_by)
-    Sorter.new(*args, &sort_by).sort
+  def self.sort(*args, **kwargs, &sort_by)
+    Sorter.new(*args, **kwargs, &sort_by).sort
   end
 
   class Sorter
