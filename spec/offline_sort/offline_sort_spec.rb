@@ -101,4 +101,3 @@ describe OfflineSort::Sorter do
     end
   end
 end
-

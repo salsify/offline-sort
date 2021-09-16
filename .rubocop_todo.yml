@@ -64,18 +64,6 @@ Layout/SpaceBeforeBlockBraces:
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingEmptyLines:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/base.rb'
-    - 'lib/offline_sort/chunk/input_output/message_pack.rb'
-    - 'lib/offline_sort/chunk/input_output/yaml.rb'
-    - 'spec/offline_sort/offline_sort_spec.rb'
-    - 'spec/spec_helper.rb'
-
 # Offense count: 2
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:

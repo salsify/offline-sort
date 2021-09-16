@@ -7,4 +7,3 @@ require 'msgpack'
 require 'tempfile'
 
 require 'offline_sort'
-
