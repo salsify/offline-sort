@@ -6,7 +6,7 @@ module OfflineSort
   module Chunk
     module InputOutput
       class Yaml < OfflineSort::Chunk::InputOutput::Base
-        #The yaml parser does not expose a document enumerator that we can call next on without loading the entire file
+        # The yaml parser does not expose a document enumerator that we can call next on without loading the entire file
         def read_entry
           YAML.load(next_document)
         end

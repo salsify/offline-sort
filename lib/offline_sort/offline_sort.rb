@@ -27,7 +27,7 @@ module OfflineSort
 
     private
 
-    #TODO optimization for when there is less than a single full chunk of data
+    # TODO optimization for when there is less than a single full chunk of data
     def merge(sorted_chunk_ios)
       pq = []
       chunk_enumerators = sorted_chunk_ios.map(&:each)

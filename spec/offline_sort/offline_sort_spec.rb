@@ -13,11 +13,11 @@ describe OfflineSort::Sorter do
     before do
       @unsorted = enumerable.dup
       r = Benchmark.measure do
-      result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
+        result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
 
-      @sorted = result.map do |entry|
-        entry
-      end
+        @sorted = result.map do |entry|
+          entry
+        end
       end
       puts r
     end
