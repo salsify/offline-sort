@@ -79,6 +79,6 @@ workflows:
               gemfile:
               - "Gemfile"
               ruby_version:
-              - "2.6.6"
-              - "2.7.2"
-              - "3.0.0"
+              - "2.6.8"
+              - "2.7.4"
+              - "3.0.2"

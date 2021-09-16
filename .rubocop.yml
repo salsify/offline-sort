@@ -1,0 +1,4 @@
+inherit_gem:
+  salsify_rubocop: conf/rubocop.yml
+
+inherit_from: .rubocop_todo.yml
