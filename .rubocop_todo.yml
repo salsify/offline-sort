@@ -7,32 +7,11 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Lint/Loop:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/yaml.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/base.rb'
-
-# Offense count: 1
 # Configuration parameters: Include, CustomTransform, IgnoreMethods, SpecSuffixOnly.
 # Include: **/*_spec*rb*, **/spec/**/*
 RSpec/FilePath:
   Exclude:
     - 'spec/offline_sort/offline_sort_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Keywords.
-# Keywords: TODO, FIXME, OPTIMIZE, HACK, REVIEW
-Style/CommentAnnotation:
-  Exclude:
-    - 'lib/offline_sort/offline_sort.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -41,15 +20,3 @@ Style/IfUnlessModifier:
     - 'lib/offline_sort/chunk/input_output/yaml.rb'
     - 'lib/offline_sort/offline_sort.rb'
     - 'spec/offline_sort/offline_sort_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/InfiniteLoop:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/base.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ZeroLengthPredicate:
-  Exclude:
-    - 'lib/offline_sort/chunk/input_output/yaml.rb'

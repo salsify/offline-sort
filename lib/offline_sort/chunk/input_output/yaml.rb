@@ -21,7 +21,7 @@ module OfflineSort
           sio = StringIO.new
           document_count = 0
 
-          begin
+          loop do
             line = io.gets
 
             if line && line.start_with?('---')
@@ -29,14 +29,15 @@ module OfflineSort
             end
 
             sio.write(line)
-          end until line.nil? || document_count > 1
+            break if line.nil? || document_count > 1
+          end
 
           # reset the io to the beginning of the document
           if document_count > 1
             io.seek(io.pos - line.length, IO::SEEK_SET)
           end
 
-          raise EOFError unless sio.size > 0
+          raise EOFError unless sio.size > 0 # rubocop:disable Style/ZeroLengthPredicate
 
           sio.string
         end

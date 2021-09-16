@@ -17,7 +17,7 @@ module OfflineSort
           raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
-        def write_entry(entry)
+        def write_entry(_entry)
           raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
@@ -40,12 +40,10 @@ module OfflineSort
 
         def each
           Enumerator.new do |yielder|
-            while true
-              begin
-                yielder.yield(read_entry)
-              rescue EOFError
-                break
-              end
+            loop do
+              yielder.yield(read_entry)
+            rescue EOFError
+              break
             end
           end
         end
