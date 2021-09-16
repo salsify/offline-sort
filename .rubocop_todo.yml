@@ -106,15 +106,6 @@ RSpec/FilePath:
   Exclude:
     - 'spec/offline_sort/offline_sort_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, Include.
-# SupportedStyles: single_quotes, double_quotes
-# Include: spec/**/*
-Salsify/RspecStringLiterals:
-  Exclude:
-    - 'spec/offline_sort/fixed_size_min_heap_spec.rb'
-
 # Offense count: 1
 Security/MarshalLoad:
   Exclude:
