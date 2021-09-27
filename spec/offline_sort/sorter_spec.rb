@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe OfflineSort::Sorter do
@@ -11,11 +13,11 @@ describe OfflineSort::Sorter do
     before do
       @unsorted = enumerable.dup
       r = Benchmark.measure do
-      result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
+        result = OfflineSort.sort(enumerable, chunk_size: entries_per_chunk, &sort)
 
-      @sorted = result.map do |entry|
-        entry
-      end
+        @sorted = result.map do |entry|
+          entry
+        end
       end
       puts r
     end
@@ -32,9 +34,7 @@ describe OfflineSort::Sorter do
             next
           end
 
-          unless ((sort.call(last) <=> sort.call(entry)) == -1)
-            raise "Out of order at line #{entry_count}"
-          end
+          raise "Out of order at line #{entry_count}" unless (sort.call(last) <=> sort.call(entry)) == -1
 
           last = entry
           entry_count += 1
@@ -45,7 +45,7 @@ describe OfflineSort::Sorter do
   end
 
   let(:arrays) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       [SecureRandom.hex, index, SecureRandom.hex]
     end
   end
@@ -54,7 +54,7 @@ describe OfflineSort::Sorter do
   let(:array_sort) { Proc.new { |arr| arr[array_sort_index] } }
 
   let(:hashes) do
-    count.times.map do |index|
+    Array.new(count) do |index|
       { 'a' => SecureRandom.hex, 'b' => index, 'c' => SecureRandom.hex }
     end
   end
@@ -72,7 +72,7 @@ describe OfflineSort::Sorter do
     context "with multiple sort keys" do
       it_behaves_like "a correct offline sort" do
         let(:enumerable) do
-          count.times.map do |index|
+          Array.new(count) do |index|
             [index.round(-1), index, SecureRandom.hex]
           end.shuffle
         end
@@ -90,7 +90,7 @@ describe OfflineSort::Sorter do
     context "with multiple sort keys" do
       it_behaves_like "a correct offline sort" do
         let(:enumerable) do
-          count.times.map do |index|
+          Array.new(count) do |index|
             { 'a' => index.round(-1), 'b' => index, 'c' => SecureRandom.hex }
           end.shuffle
         end
@@ -99,4 +99,3 @@ describe OfflineSort::Sorter do
     end
   end
 end
-

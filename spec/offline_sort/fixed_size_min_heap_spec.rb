@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe OfflineSort::FixedSizeMinHeap do
@@ -6,14 +8,14 @@ describe OfflineSort::FixedSizeMinHeap do
 
   describe "#initialize" do
     it "is a a heap" do
-      expect{ assert_min_heap(heap.array) }.not_to raise_error
+      expect { assert_min_heap(heap.array) }.not_to raise_error
     end
   end
 
   describe "#push" do
     context "with a full array" do
       it "raises an exception" do
-        expect{ heap.push(rand(20)) }.to raise_error("Heap Size (#{array.size}) Exceeded")
+        expect { heap.push(rand(20)) }.to raise_error("Heap Size (#{array.size}) Exceeded")
       end
     end
 
@@ -23,7 +25,7 @@ describe OfflineSort::FixedSizeMinHeap do
       end
 
       it "adds to the heap" do
-        expect{ heap.push(1) }.not_to raise_error
+        expect { heap.push(1) }.not_to raise_error
       end
     end
 
@@ -34,7 +36,7 @@ describe OfflineSort::FixedSizeMinHeap do
 
       it "adds to the heap" do
         5.times do
-          expect{ heap.push(1) }.not_to raise_error
+          expect { heap.push(1) }.not_to raise_error
         end
       end
     end
@@ -68,7 +70,7 @@ describe OfflineSort::FixedSizeMinHeap do
       100.times do
         heap.pop
         heap.push(rand(100))
-        expect{ assert_min_heap(heap.array) }.not_to raise_error
+        expect { assert_min_heap(heap.array) }.not_to raise_error
       end
     end
   end
@@ -78,18 +80,16 @@ describe OfflineSort::FixedSizeMinHeap do
       left = (2 * index) + 1
       right = (2 * index) + 2
 
-      if left < array.size
-        unless array[left] >= e
-          puts "left #{e} #{array}"
-          raise "not a heap"
-        end
+      if left < array.size && array[left] < e
+        puts "left #{e} #{array}"
+        raise 'not a heap'
       end
 
-      if right < array.size
-        unless array[right] >= e
-          puts "right #{e} #{array}"
-          raise "not a heap"
-        end
+      next unless right < array.size
+
+      unless array[right] >= e
+        puts "right #{e} #{array}"
+        raise 'not a heap'
       end
     end
   end

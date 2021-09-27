@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'offline_sort/chunk'
 require 'offline_sort/fixed_size_min_heap'
 
 module OfflineSort
-  def self.sort(*args, &sort_by)
-    Sorter.new(*args, &sort_by).sort
+  def self.sort(*args, **kwargs, &sort_by)
+    Sorter.new(*args, **kwargs, &sort_by).sort
   end
 
   class Sorter
@@ -12,7 +14,10 @@ module OfflineSort
 
     attr_reader :enumerable, :sort_by, :chunk_size, :chunk_input_output_class
 
-    def initialize(enumerable, chunk_input_output_class: DEFAULT_CHUNK_IO_CLASS, chunk_size: DEFAULT_CHUNK_SIZE, &sort_by)
+    def initialize(enumerable,
+                   chunk_input_output_class: DEFAULT_CHUNK_IO_CLASS,
+                   chunk_size: DEFAULT_CHUNK_SIZE,
+                   &sort_by)
       @enumerable = enumerable
       @chunk_input_output_class = chunk_input_output_class
       @chunk_size = chunk_size
@@ -25,7 +30,7 @@ module OfflineSort
 
     private
 
-    #TODO optimization for when there is less than a single full chunk of data
+    # TODO: optimization for when there is less than a single full chunk of data
     def merge(sorted_chunk_ios)
       pq = []
       chunk_enumerators = sorted_chunk_ios.map(&:each)
@@ -39,7 +44,7 @@ module OfflineSort
       pq = FixedSizeMinHeap.new(pq, &entry_sort_by)
 
       Enumerator.new do |yielder|
-        while item = pq.pop
+        while (item = pq.pop)
           yielder.yield(item.data)
 
           begin
@@ -65,9 +70,7 @@ module OfflineSort
         end
       end
 
-      unless chunk_entries.empty?
-        sorted_chunks << write_sorted_chunk(chunk_entries)
-      end
+      sorted_chunks << write_sorted_chunk(chunk_entries) unless chunk_entries.empty?
 
       sorted_chunks
     end

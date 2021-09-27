@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'msgpack'
 require 'offline_sort/chunk/input_output/base'
 
@@ -29,4 +31,3 @@ module OfflineSort
     end
   end
 end
-

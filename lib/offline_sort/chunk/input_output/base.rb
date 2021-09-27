@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OfflineSort
   module Chunk
     module InputOutput
@@ -12,11 +14,11 @@ module OfflineSort
         end
 
         def read_entry
-          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
+          raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
-        def write_entry(entry)
-          raise(MethodNotImplementedError, "#{__method__} must be overridden by #{self.class}")
+        def write_entry(_entry)
+          raise MethodNotImplementedError.new("#{__method__} must be overridden by #{self.class}")
         end
 
         def write_entries(entries)
@@ -38,12 +40,10 @@ module OfflineSort
 
         def each
           Enumerator.new do |yielder|
-            while true
-              begin
-                yielder.yield(read_entry)
-              rescue EOFError
-                break
-              end
+            loop do
+              yielder.yield(read_entry)
+            rescue EOFError
+              break
             end
           end
         end
@@ -52,4 +52,3 @@ module OfflineSort
     end
   end
 end
-
