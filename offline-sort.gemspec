@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
     raise 'RubyGems 2.0 or newer is required to set allowed_push_host.'
   end
 
-  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  spec.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
 
   spec.required_ruby_version = '>= 2.6'
 
