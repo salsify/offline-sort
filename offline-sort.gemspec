@@ -14,7 +14,14 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/salsify/offline-sort'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  if spec.respond_to?(:metadata)
+    spec.metadata['allowed_push_host'] = 'https://rubygems.org'
+    spec.metadata['rubygems_mfa_required'] = 'true'
+  else
+    raise 'RubyGems 2.0 or newer is required to set allowed_push_host.'
+  end
+
+  spec.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
 
   spec.required_ruby_version = '>= 2.6'
 
